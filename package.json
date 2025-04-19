@@ -2,7 +2,7 @@
   "name": "n8n-nodes-weatherxm-pro",
   "version": "0.1.0",
   "description": "n8n community node for WeatherXM Pro API integration.",
-  "author": "Johnny",
+  "author": "John Frontzos",
   "license": "MIT",
   "main": "dist/WeatherXMPro.node.js",
   "types": "dist/WeatherXMPro.node.d.ts",
