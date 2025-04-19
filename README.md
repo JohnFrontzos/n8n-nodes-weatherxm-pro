@@ -1,46 +1,82 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# WeatherXM Pro API Community n8n Node
 
-# n8n-nodes-starter
+This is a community node for [n8n](https://n8n.io/) that integrates with the [WeatherXM Pro API](https://pro.weatherxm.com/docs). It allows you to interact with WeatherXM Pro services to retrieve weather data and perform other API operations.
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](n8n.io). It includes the node linter and other dependencies.
+## Features
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+- Fetch real-time weather data.
+- Access historical weather information.
+- Integrate WeatherXM Pro API with your n8n workflows.
 
-## Prerequisites
+## Requirements
 
-You need the following installed on your development machine:
+- API key from WeatherXM Pro.
 
-* [git](https://git-scm.com/downloads)
-* Node.js and pnpm. Minimum version Node 18. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-  ```
-  pnpm install n8n -g
-  ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+## Installation
 
-## Using this starter
-
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
-
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
+1. Clone this repository into your n8n custom nodes directory:
+   ```bash
+   git clone <repository-url> /path/to/n8n/custom/nodes/wxm-pro
    ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
+2. Install dependencies and build the node:
+   ```bash
+   cd /path/to/n8n/custom/nodes/wxm-pro
+   npm install
+   npm run build
    ```
-3. Run `pnpm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `pnpm lint` to check for errors or `pnpm lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+3. Restart your n8n instance.
 
-## More information
+## Configuration
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+1. Obtain your API key from the [WeatherXM Pro API dashboard](https://pro.weatherxm.com/api-management).
+2. Configure the node in your n8n workflow with the API key and other required parameters.
+
+## Usage
+
+1. Add the WeatherXM Pro node to your n8n workflow.
+2. Configure the node with the required inputs, such as API key and endpoint parameters.
+3. Execute the workflow to interact with the WeatherXM Pro API.
+
+### Example Workflow
+
+```
+{
+  "nodes": [
+    {
+      "parameters": {
+        "action": "getStationsNear",
+        "lat": 40.76,
+        "lon": -73.98,
+        "radius": 1000
+      },
+      "name": "WeatherXM Pro",
+      "type": "n8n-nodes-weatherxm-pro.WeatherXMPro",
+      "typeVersion": 1,
+      "position": [450, 300],
+      "credentials": {
+        "weatherXMProApi": {
+          "apiKey": "YOUR_API_KEY"
+        }
+      }
+    }
+  ]
+}
+```
+
+## Build
+
+To build the node after making changes:
+
+```bash
+npm install
+npm run build
+```
+
+## Documentation
+
+For detailed API documentation, visit the [WeatherXM Pro API Docs](https://pro.weatherxm.com/docs).
+
 
 ## License
 
-[MIT](https://github.com/n8n-io/n8n-nodes-starter/blob/master/LICENSE.md)
+This project is licensed under the MIT License.
