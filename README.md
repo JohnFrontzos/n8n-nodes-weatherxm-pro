@@ -6,6 +6,9 @@ This is a community node for [n8n](https://n8n.io/) that integrates with the [We
 
 - Fetch real-time weather data.
 - Access historical weather information.
+- Search for cells by region name (H3 geospatial index).
+- Get all stations in a specific H3 cell.
+- Retrieve weather forecasts (daily/hourly) for a cell.
 - Integrate WeatherXM Pro API with your n8n workflows.
 
 ## Requirements
@@ -37,6 +40,17 @@ This is a community node for [n8n](https://n8n.io/) that integrates with the [We
 2. Configure the node with the required inputs, such as API key and endpoint parameters.
 3. Execute the workflow to interact with the WeatherXM Pro API.
 
+## Supported Actions
+
+- **Observation: Get Latest Observation** – Fetch the latest observation data for a station.
+- **Observation: Get Historical Observations** – Fetch historical observations for a station and date.
+- **Stations: Get Stations Near** – Get stations within a radius from a location.
+- **Stations: Get Stations in Bounding Box** – Get stations within a bounding box.
+- **Stations: Get All Stations** – Get all available stations.
+- **Stations: Get Stations in Cell** – Get all stations in a H3 cell.
+- **Cells: Search for Cell in Region** – Search for cells by region name.
+- **Forecast: Get Forecast for a Cell** – Get weather forecast (daily/hourly) for a cell.
+
 ### Example Workflow
 
 ```
@@ -60,6 +74,42 @@ This is a community node for [n8n](https://n8n.io/) that integrates with the [We
       }
     }
   ]
+}
+```
+
+### Example: Search for Cells by Region Name
+
+```
+{
+  "parameters": {
+    "action": "searchCellsInRegion",
+    "region_query": "Athens"
+  }
+}
+```
+
+### Example: Get Stations in a Cell
+
+```
+{
+  "parameters": {
+    "action": "getStationsInCell",
+    "cell_index": "872a10089ffffff"
+  }
+}
+```
+
+### Example: Get Forecast for a Cell
+
+```
+{
+  "parameters": {
+    "action": "getForecastForCell",
+    "forecast_cell_index": "872a10089ffffff",
+    "forecast_from": "2025-04-20",
+    "forecast_to": "2025-04-27",
+    "forecast_include": "daily"
+  }
 }
 ```
 
