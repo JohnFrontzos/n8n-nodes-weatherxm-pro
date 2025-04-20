@@ -1,6 +1,6 @@
 import { ICredentialType, INodeProperties } from 'n8n-workflow';
 
-class WeatherXMProApi implements ICredentialType {
+export class WeatherXMProApi implements ICredentialType {
     name = 'weatherXMProApi';
     displayName = 'WeatherXM Pro API';
     documentationUrl = 'https://pro.weatherxm.com/api';
@@ -16,6 +16,3 @@ class WeatherXMProApi implements ICredentialType {
         },
     ];
 }
-
-declare var module: any;
-module.exports = { WeatherXMProApi };

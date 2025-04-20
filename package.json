@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-weatherxm-pro",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "n8n community node for WeatherXM Pro API integration.",
   "author": "John F",
   "license": "MIT",
@@ -32,5 +32,14 @@
     "eslint": "^8.57.1",
     "eslint-plugin-n8n-nodes-base": "^1.16.3",
     "typescript": "^5.8.3"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/WeatherXMProApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/WeatherXMPro.node.js"
+    ]
   }
 }

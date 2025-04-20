@@ -1,23 +1,18 @@
 import { INodeType, INodeTypeDescription, IExecuteFunctions, IDataObject, INodeProperties, NodeConnectionType } from 'n8n-workflow';
 
-/**
- * WeatherXM Pro n8n Community Node
- * Interacts with the WeatherXM Pro API.
- * @author John Frontzos
- */
-class WeatherXMPro implements INodeType {
+export class WeatherXMPro implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'WeatherXM Pro',
-        name: 'weatherXmPro',
+        name: 'weatherXMPro',
         group: ['transform'],
         version: 2,
         description: 'Interact with the WeatherXM Pro API',
-        icon: 'file:wxm-icon-60x60.png', // Use PNG icon for n8n custom node
+        icon: 'file:weatherxm-60x60.png',
         defaults: {
             name: 'WeatherXM Pro',
         },
-        inputs: ['main'],
-        outputs: ['main'],
+        inputs: ['main' as NodeConnectionType],
+        outputs: ['main' as NodeConnectionType],
         credentials: [
             {
                 name: 'weatherXMProApi',
@@ -34,35 +29,31 @@ class WeatherXMPro implements INodeType {
                         name: 'Observation: Get Latest Observation',
                         value: 'getLatestObservation',
                         description: 'Fetch the latest observation data for a station'
-
-																								action: 'Fetch the latest observation data for a station',                    },
+                    },
                     {
                         name: 'Observation: Get Historical Observations',
                         value: 'getHistoricalObservations',
                         description: 'Fetch historical observations for a station and date'
-
-																								action: 'Fetch historical observations for a station and date',                    },
+                    },
                     {
                         name: 'Stations: Get Stations Near',
                         value: 'getStationsNear',
                         description: 'Get stations within a radius from a location'
-
-																								action: 'Get stations within a radius from a location',                    },
+                    },
                     {
                         name: 'Stations: Get Stations in Bounding Box',
                         value: 'getStationsBounds',
                         description: 'Get stations within a bounding box'
-
-																								action: 'Get stations within a bounding box',                    },
+                    },
                     {
                         name: 'Stations: Get All Stations',
                         value: 'getAllStations',
                         description: 'Get all available stations'
-
-																								action: 'Get all available stations',                    }
+                    },
                 ],
                 default: 'getStationsNear',
-           },
+                description: 'Select an action to perform.'
+            },
             {
                 displayName: 'Station ID',
                 name: 'station_id',
@@ -73,7 +64,7 @@ class WeatherXMPro implements INodeType {
                         action: ['getLatestObservation', 'getHistoricalObservations']
                     }
                 },
-                description: 'The unique identifier of the station'
+                description: 'The unique identifier of the station.'
             },
             {
                 displayName: 'Date',
@@ -85,7 +76,7 @@ class WeatherXMPro implements INodeType {
                         action: ['getHistoricalObservations']
                     }
                 },
-                description: 'Date (YYYY-MM-DD) for historical observations'
+                description: 'Date (YYYY-MM-DD) for historical observations.'
             },
             {
                 displayName: 'Latitude',
@@ -97,7 +88,7 @@ class WeatherXMPro implements INodeType {
                         action: ['getStationsNear']
                     }
                 },
-                description: 'Latitude of the center of the area'
+                description: 'Latitude of the center of the area.'
             },
             {
                 displayName: 'Longitude',
@@ -109,7 +100,7 @@ class WeatherXMPro implements INodeType {
                         action: ['getStationsNear']
                     }
                 },
-                description: 'Longitude of the center of the area'
+                description: 'Longitude of the center of the area.'
             },
             {
                 displayName: 'Radius',
@@ -121,7 +112,7 @@ class WeatherXMPro implements INodeType {
                         action: ['getStationsNear']
                     }
                 },
-                description: 'Radius (in meters) for which stations are queried'
+                description: 'Radius (in meters) for which stations are queried.'
             },
             {
                 displayName: 'Min Latitude',
@@ -133,7 +124,7 @@ class WeatherXMPro implements INodeType {
                         action: ['getStationsBounds']
                     }
                 },
-                description: 'Minimum latitude of the bounding box'
+                description: 'Minimum latitude of the bounding box.'
             },
             {
                 displayName: 'Min Longitude',
@@ -145,7 +136,7 @@ class WeatherXMPro implements INodeType {
                         action: ['getStationsBounds']
                     }
                 },
-                description: 'Minimum longitude of the bounding box'
+                description: 'Minimum longitude of the bounding box.'
             },
             {
                 displayName: 'Max Latitude',
@@ -157,7 +148,7 @@ class WeatherXMPro implements INodeType {
                         action: ['getStationsBounds']
                     }
                 },
-                description: 'Maximum latitude of the bounding box'
+                description: 'Maximum latitude of the bounding box.'
             },
             {
                 displayName: 'Max Longitude',
@@ -169,7 +160,7 @@ class WeatherXMPro implements INodeType {
                         action: ['getStationsBounds']
                     }
                 },
-                description: 'Maximum longitude of the bounding box'
+                description: 'Maximum longitude of the bounding box.'
             }
         ],
     };
@@ -182,13 +173,10 @@ class WeatherXMPro implements INodeType {
             throw new Error('No credentials returned!');
         }
         const apiKey = credentials.apiKey as string;
-        const baseUrl = 'https://pro.weatherxm.com/api';
+        const baseUrl = 'https://pro.weatherxm.com/api/v1';
         let responseData;
         try {
             if (action === 'getStationsNear') {
-                if (typeof params.lat !== 'number' || typeof params.lon !== 'number' || typeof params.radius !== 'number') {
-                    throw new Error('Latitude, longitude, and radius must be numbers.');
-                }
                 responseData = await this.helpers.request({
                     method: 'GET',
                     url: `${baseUrl}/stations/near`,
@@ -203,9 +191,6 @@ class WeatherXMPro implements INodeType {
                     json: true,
                 });
             } else if (action === 'getStationsBounds') {
-                if (typeof params.min_lat !== 'number' || typeof params.min_lon !== 'number' || typeof params.max_lat !== 'number' || typeof params.max_lon !== 'number') {
-                    throw new Error('Bounding box coordinates must be numbers.');
-                }
                 responseData = await this.helpers.request({
                     method: 'GET',
                     url: `${baseUrl}/stations/bounds`,
@@ -230,7 +215,7 @@ class WeatherXMPro implements INodeType {
                     json: true,
                 });
             } else if (action === 'getLatestObservation') {
-                if (!params.station_id || typeof params.station_id !== 'string') throw new Error('Station ID is required and must be a string.');
+                if (!params.station_id) throw new Error('Station ID is required');
                 responseData = await this.helpers.request({
                     method: 'GET',
                     url: `${baseUrl}/stations/${params.station_id}/latest`,
@@ -240,9 +225,7 @@ class WeatherXMPro implements INodeType {
                     json: true,
                 });
             } else if (action === 'getHistoricalObservations') {
-                if (!params.station_id || typeof params.station_id !== 'string' || !params.date || typeof params.date !== 'string') {
-                    throw new Error('Station ID and Date are required and must be strings.');
-                }
+                if (!params.station_id || !params.date) throw new Error('Station ID and Date are required');
                 responseData = await this.helpers.request({
                     method: 'GET',
                     url: `${baseUrl}/stations/${params.station_id}/history`,
@@ -254,17 +237,13 @@ class WeatherXMPro implements INodeType {
                     },
                     json: true,
                 });
-            } else {
-                throw new Error(`Unknown action: ${action}`);
             }
             return this.prepareOutputData([{ json: responseData }]);
         } catch (error) {
-            return this.prepareOutputData([
-                { json: { error: error instanceof Error ? error.message : String(error) } as IDataObject }
-            ]);
+            if (error instanceof Error) {
+                throw new Error(`WeatherXM Pro API error: ${error.message}`);
+            }
+            throw error;
         }
     }
 }
-
-declare var module: any;
-module.exports = { WeatherXMPro };
