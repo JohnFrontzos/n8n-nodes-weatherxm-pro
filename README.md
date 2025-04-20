@@ -16,7 +16,7 @@ This is a community node for [n8n](https://n8n.io/) that integrates with the [We
 
 1. Clone this repository into your n8n custom nodes directory:
    ```bash
-   git clone https://github.com/JohnFrontzos/n8n-nodes-wxm-pro.git
+   git clone git@github.com:JohnFrontzos/n8n-nodes-weatherxm-pro.git
    ```
 2. Install dependencies and build the node:
    ```bash
