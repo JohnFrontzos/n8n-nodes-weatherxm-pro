@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-weatherxm-pro",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "n8n community node for WeatherXM Pro API integration.",
   "author": "John F",
   "license": "MIT",
