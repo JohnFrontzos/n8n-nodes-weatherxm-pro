@@ -3,9 +3,7 @@ import { INodeType, INodeTypeDescription, IExecuteFunctions, IDataObject, INodeP
 /**
  * WeatherXM Pro n8n Community Node
  * Interacts with the WeatherXM Pro API.
- * Uses custom icon: weatherxm.ico (from https://pro.weatherxm.com/favicon.ico)
- * Place weatherxm.ico in the root of your node package.
- * @author Johnny
+ * @author John Frontzos
  */
 export class WeatherXMPro implements INodeType {
     description: INodeTypeDescription = {
