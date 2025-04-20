@@ -50,6 +50,21 @@ export class WeatherXMPro implements INodeType {
                         value: 'getAllStations',
                         description: 'Get all available stations'
                     },
+                    {
+                        name: 'Stations: Get Stations in Cell',
+                        value: 'getStationsInCell',
+                        description: 'Get all stations in a H3 cell'
+                    },
+                    {
+                        name: 'Cells: Search for Cell in Region',
+                        value: 'searchCellsInRegion',
+                        description: 'Search for cells by region name'
+                    },
+                    {
+                        name: 'Forecast: Get Forecast for a Cell',
+                        value: 'getForecastForCell',
+                        description: 'Get weather forecast for a cell (daily/hourly)'
+                    },
                 ],
                 default: 'getStationsNear',
                 description: 'Select an action to perform.'
@@ -161,6 +176,82 @@ export class WeatherXMPro implements INodeType {
                     }
                 },
                 description: 'Maximum longitude of the bounding box.'
+            },
+            {
+                displayName: 'Region Name',
+                name: 'region_query',
+                type: 'string',
+                default: '',
+                displayOptions: {
+                    show: {
+                        action: ['searchCellsInRegion']
+                    }
+                },
+                description: 'The name of the region to search for cells.'
+            },
+            {
+                displayName: 'Cell Index',
+                name: 'cell_index',
+                type: 'string',
+                default: '',
+                displayOptions: {
+                    show: {
+                        action: ['getStationsInCell']
+                    }
+                },
+                description: 'The H3 index of the cell to return stations for.'
+            },
+            {
+                displayName: 'Forecast Cell Index',
+                name: 'forecast_cell_index',
+                type: 'string',
+                default: '',
+                displayOptions: {
+                    show: {
+                        action: ['getForecastForCell']
+                    }
+                },
+                description: 'The H3 index of the cell to get forecast for.'
+            },
+            {
+                displayName: 'From Date',
+                name: 'forecast_from',
+                type: 'string',
+                default: '',
+                displayOptions: {
+                    show: {
+                        action: ['getForecastForCell']
+                    }
+                },
+                description: 'The first day for which to get forecast data (YYYY-MM-DD).'
+            },
+            {
+                displayName: 'To Date',
+                name: 'forecast_to',
+                type: 'string',
+                default: '',
+                displayOptions: {
+                    show: {
+                        action: ['getForecastForCell']
+                    }
+                },
+                description: 'The last day for which to get forecast data (YYYY-MM-DD).'
+            },
+            {
+                displayName: 'Include',
+                name: 'forecast_include',
+                type: 'options',
+                options: [
+                    { name: 'Daily', value: 'daily' },
+                    { name: 'Hourly', value: 'hourly' }
+                ],
+                default: 'daily',
+                displayOptions: {
+                    show: {
+                        action: ['getForecastForCell']
+                    }
+                },
+                description: 'Types of forecast to include.'
             }
         ],
     };
@@ -231,6 +322,47 @@ export class WeatherXMPro implements INodeType {
                     url: `${baseUrl}/stations/${params.station_id}/history`,
                     qs: {
                         date: params.date,
+                    },
+                    headers: {
+                        'X-API-KEY': apiKey,
+                    },
+                    json: true,
+                });
+            } else if (action === 'searchCellsInRegion') {
+                if (!params.region_query) throw new Error('Region Name is required');
+                responseData = await this.helpers.request({
+                    method: 'GET',
+                    url: `${baseUrl}/cells/search`,
+                    qs: {
+                        query: params.region_query,
+                    },
+                    headers: {
+                        'X-API-KEY': apiKey,
+                    },
+                    json: true,
+                });
+            } else if (action === 'getStationsInCell') {
+                if (!params.cell_index) throw new Error('Cell Index is required');
+                responseData = await this.helpers.request({
+                    method: 'GET',
+                    url: `${baseUrl}/cells/${params.cell_index}/stations`,
+                    headers: {
+                        'X-API-KEY': apiKey,
+                    },
+                    json: true,
+                });
+            } else if (action === 'getForecastForCell') {
+                if (!params.forecast_cell_index) throw new Error('Forecast Cell Index is required');
+                if (!params.forecast_from) throw new Error('From Date is required');
+                if (!params.forecast_to) throw new Error('To Date is required');
+                if (!params.forecast_include) throw new Error('Include (daily/hourly) is required');
+                responseData = await this.helpers.request({
+                    method: 'GET',
+                    url: `${baseUrl}/cells/${params.forecast_cell_index}/forecast`,
+                    qs: {
+                        from: params.forecast_from,
+                        to: params.forecast_to,
+                        include: params.forecast_include,
                     },
                     headers: {
                         'X-API-KEY': apiKey,
