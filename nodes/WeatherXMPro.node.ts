@@ -7,7 +7,7 @@ export class WeatherXMPro implements INodeType {
         group: ['transform'],
         version: 2,
         description: 'Interact with the WeatherXM Pro API',
-        icon: 'file:wxm-white.png',
+        icon: 'file:wxmWhite.png',
         defaults: {
             name: 'WeatherXM Pro',
         },
