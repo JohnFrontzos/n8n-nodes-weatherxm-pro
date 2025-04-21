@@ -4,8 +4,9 @@ export class WeatherXMPro implements INodeType {
     description: INodeTypeDescription = {
         displayName: 'WeatherXM Pro',
         name: 'weatherXMPro',
-        group: ['transform', 'aiTools'], // Added aiTools group for AI discoverability
+        group: ['transform', 'aiTools'],
         version: 2,
+        usableAsTool: true,
         description: 'Interact with the WeatherXM Pro API.\n\nThis node is AI Tool enabled: it exposes all WeatherXM Pro API endpoints as actions, making it easy for AI agents to fetch weather data, station info, and forecasts.\n\nExample usage:\n- Get the latest observation for a station\n- Find stations near a location\n- Get weather forecast for a cell',
         icon: 'file:weatherxm.svg',
         defaults: {
