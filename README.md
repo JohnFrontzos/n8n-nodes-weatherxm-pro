@@ -51,6 +51,40 @@ This is a community node for [n8n](https://n8n.io/) that integrates with the [We
 - **Cells: Search for Cell in Region** – Search for cells by region name.
 - **Forecast: Get Forecast for a Cell** – Get weather forecast (daily/hourly) for a cell.
 
+## Parameters and Example Values
+
+| Parameter              | Description                                                                 | Example Value           | Used In Actions                                 |
+|-----------------------|-----------------------------------------------------------------------------|------------------------|-------------------------------------------------|
+| `station_id`          | The unique identifier of the station.                                       | `f8fdee70-bf55-11ed-95eb-b351f0b0cc44`     | getLatestObservation, getHistoricalObservations |
+| `date`                | Date (YYYY-MM-DD) for historical observations.                             | `2024-04-01`           | getHistoricalObservations                       |
+| `lat`                 | Latitude of the center of the area.                                        | `51.5074`              | getStationsNear                                 |
+| `lon`                 | Longitude of the center of the area.                                       | `-0.1278`              | getStationsNear                                 |
+| `radius`              | Radius (in meters) for which stations are queried.                         | `1000`                 | getStationsNear                                 |
+| `min_lat`             | Minimum latitude of the bounding box.                                      | `37.9`                 | getStationsBounds                               |
+| `min_lon`             | Minimum longitude of the bounding box.                                     | `23.7`                 | getStationsBounds                               |
+| `max_lat`             | Maximum latitude of the bounding box.                                      | `38.0`                 | getStationsBounds                               |
+| `max_lon`             | Maximum longitude of the bounding box.                                     | `23.8`                 | getStationsBounds                               |
+| `region_query`        | The name of the region to search for cells.                                | `London`               | searchCellsInRegion                             |
+| `cell_index`          | The H3 index of the cell to return stations for.                           | `87194ad33ffffff`      | getStationsInCell                               |
+| `forecast_cell_index` | The H3 index of the cell to get forecast for.                              | `87194ad33ffffff`      | getForecastForCell                              |
+| `forecast_from`       | The first day for which to get forecast data (YYYY-MM-DD).                 | `2024-04-01`           | getForecastForCell                              |
+| `forecast_to`         | The last day for which to get forecast data (YYYY-MM-DD).                  | `2024-04-07`           | getForecastForCell                              |
+| `forecast_include`    | Types of forecast to include. Choose `daily` for summaries or `hourly` for details. | `daily` or `hourly`    | getForecastForCell                              |
+
+## Typical Use Cases
+
+- **Real-time Weather Monitoring:** Use `getLatestObservation` to fetch the most recent data for a specific station.
+- **Weather Analytics & Reporting:** Use `getHistoricalObservations` to analyze trends for a station on a specific date.
+- **Find Nearest Stations:** Use `getStationsNear` with latitude, longitude, and radius to locate nearby stations.
+- **Regional Station Mapping:** Use `getStationsBounds` to get all stations within a bounding box.
+- **Spatial Queries:** Use `getStationsInCell` or `searchCellsInRegion` for H3 cell-based queries.
+- **Forecasting:** Use `getForecastForCell` to retrieve daily or hourly forecasts for a cell.
+
+## AI/Automation Tips
+- The node is AI Tool enabled and will appear in n8n's AI Agent tool selection.
+- Each action is described in detail and includes example values for easy automation.
+- Use the example workflows above as templates for your own automations.
+
 ### Example Workflow
 
 ```
@@ -59,8 +93,8 @@ This is a community node for [n8n](https://n8n.io/) that integrates with the [We
     {
       "parameters": {
         "action": "getStationsNear",
-        "lat": 40.76,
-        "lon": -73.98,
+        "lat": 51.5074,
+        "lon": -0.1278,
         "radius": 1000
       },
       "name": "WeatherXM Pro",
@@ -83,7 +117,7 @@ This is a community node for [n8n](https://n8n.io/) that integrates with the [We
 {
   "parameters": {
     "action": "searchCellsInRegion",
-    "region_query": "Athens"
+    "region_query": "London"
   }
 }
 ```
@@ -94,7 +128,7 @@ This is a community node for [n8n](https://n8n.io/) that integrates with the [We
 {
   "parameters": {
     "action": "getStationsInCell",
-    "cell_index": "872a10089ffffff"
+    "cell_index": "87194ad33ffffff"
   }
 }
 ```
@@ -105,7 +139,7 @@ This is a community node for [n8n](https://n8n.io/) that integrates with the [We
 {
   "parameters": {
     "action": "getForecastForCell",
-    "forecast_cell_index": "872a10089ffffff",
+    "forecast_cell_index": "87194ad33ffffff",
     "forecast_from": "2025-04-20",
     "forecast_to": "2025-04-27",
     "forecast_include": "daily"
@@ -125,7 +159,6 @@ npm run build
 ## Documentation
 
 For detailed API documentation, visit the [WeatherXM Pro API Docs](https://pro.weatherxm.com/docs).
-
 
 ## License
 
